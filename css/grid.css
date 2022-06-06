@@ -1,0 +1,153 @@
+svg {
+	width: 100%;
+}
+
+svg line {
+	stroke: rgba(255, 255, 255, 0.3);
+	stroke-width: 0.1;
+}
+
+svg line.temp-line {
+	stroke-dasharray: 1;
+}
+
+svg polygon,
+svg path {
+	fill: rgba(212, 212, 212, 0.2);
+	stroke: rgba(0, 0, 0, 0.2);
+	stroke-linejoin: round;
+	stroke-width: 0.1;
+	animation-name: appear;
+	animation-duration: 0.3s;
+	animation-timing-function: ease-out;
+	transform-origin: center center;
+	transform-box: fill-box;
+}
+
+@keyframes appear {
+	0% {
+		opacity: 0;
+		transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1, 1);
+	}
+}
+
+svg polygon:hover,
+svg path:hover {
+	fill: rgba(255, 255, 255, 0.1);
+	stroke: #fff;
+	stroke-width: 0.05;
+}
+
+svg circle {
+	r: 0.1;
+	fill: rgba(30, 30, 40, 0.5);
+	stroke: none;
+}
+
+svg path.red {
+	fill: rgb(240, 100, 100);
+	stroke: rgb(100, 0, 0);
+	stroke-width: 0.1;
+}
+
+svg path {
+	stroke-width: 0.1;
+}
+
+#buttons {
+	width: 80%;
+	margin-left: 10%;
+	margin-top: -4%;
+}
+
+.color-button {
+	display: inline-block;
+	border-radius: 100%;
+	width: 2%;
+	padding-bottom: 2%;
+	margin-left: 10px;
+	box-shadow: 1px 1px 2px 0px #555;
+	cursor: pointer;
+}
+
+.button {
+	display: inline-block;
+	text-align: center;
+	background: rgba(100, 100, 100, 0.7);
+	margin-left: 20px;
+	padding: 3px;
+	cursor: pointer;
+	margin-top: -20px;
+	position: relative;
+	top: -10px;
+	padding-left: 5px;
+	padding-right: 6px;
+	border-radius: 6px;
+	color: white;
+	box-shadow: 1px 1px 2px 0px #555;
+}
+
+.color-button:hover,
+.button:hover {
+	box-shadow: 2px 2px 3px 1px #666;
+}
+
+.color-1,
+svg path.color-1 {
+	background: #e99a99;
+	fill: #e99a99;
+	stroke: #9b6666;
+	stroke-width: 0.1;
+}
+
+.color-2,
+svg path.color-2 {
+	background: #ffe59a;
+	fill: #ffe59a;
+	stroke: #dfb22d;
+	stroke-width: 0.1;
+}
+
+.color-3,
+svg path.color-3 {
+	background: #a6d593;
+	fill: #a6d593;
+	stroke: #78b160;
+	stroke-width: 0.1;
+}
+
+.color-4,
+svg path.color-4 {
+	background: #b5a7d5;
+	fill: #b5a7d5;
+	stroke: #887ea3;
+	stroke-width: 0.1;
+}
+
+.color-5,
+svg path.color-5 {
+	background: #6e9feb;
+	fill: #6e9feb;
+	stroke: #456596;
+	stroke-width: 0.1;
+}
+
+.color-6,
+svg path.color-6 {
+	background: #c27ba0;
+	fill: #c27ba0;
+	stroke: #694256;
+	stroke-width: 0.1;
+}
+
+.color-7,
+svg path.color-7 {
+	background: #dcd4af;
+	fill: #dcd4af;
+	stroke: #8d886e;
+	stroke-width: 0.1;
+}
