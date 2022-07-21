@@ -1,3 +1,7 @@
-import { Group } from "three";
+import { Group, Mesh } from "three";
 
-export function generate_grid(world: Group, cb: () => any): void;
+export interface ShapePoints extends Mesh {
+	points: Array<any>;
+}
+export type Callback = () => void;
+export function generate_grid(world: Group, cb: Callback): void;

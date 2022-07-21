@@ -3,10 +3,10 @@ import * as THREE from "three";
 // TODO: GUI
 
 /**
- * @param {THREE.Group} world
- * @param {any } cb
+ * @param {Group} world
+ * @param {() => void} callback
  */
-export async function generate_grid(world, cb) {
+export async function generate_grid(world, callback) {
 	let blue_noise = poisson_disk_sampling(0.045, 40);
 
 	const d_triangles = Delaunator.from(blue_noise).triangles;
@@ -210,7 +210,7 @@ export async function generate_grid(world, cb) {
 	let n_iters = 40;
 	let lines2del = [];
 	let forces = nj.zeros(blue_noise.shape);
-
+	const createdPolygons = [];
 	function post_loop() {
 		blue_noise = blue_noise.multiply(150).subtract(25).tolist();
 
@@ -253,42 +253,12 @@ export async function generate_grid(world, cb) {
 			centers = centers.map((x) => x.tolist());
 
 			const polygon = add_path(centers);
+			createdPolygons.push(centers);
 
 			world.add(polygon);
-
-			// polygon.on("click", function (ev) {
-			// 	console.log(ev.target.userData.code);
-			// 	ev.target.material.color.setHex(0xffff00);
-			// });
-
-			// polygon.add = function () {
-			// 	const centers = this.data;
-			// 	const new_elem = add_path(centers, curr_color, centers_temp);
-			// 	new_elem.onmouseup = function () {
-			// 		mouse_down = false;
-			// 	};
-			// };
-			// polygon.onmousedown = function (e) {
-			// 	this.add();
-			// 	mouse_down = true;
-			// };
-
-			// polygon.onmouseup = function () {
-			// 	mouse_down = false;
-			// };
-
-			// polygon.onmouseenter = function () {
-			// 	if (mouse_down) {
-			// 		this.add();
-			// 	}
-			// };
 		}
 
-		cb();
-
-		// svg.onmouseleave = function () {
-		// 	mouse_down = false;
-		// };
+		callback(createdPolygons);
 	}
 	let counter = 0;
 
@@ -394,9 +364,8 @@ function fancy_index(a, idx) {
 
 function add_line(x1, y1, x2, y2) {
 	const material = new THREE.LineDashedMaterial({
-		color: "rgba(0, 0, 0, 0.2)",
+		color: "#DBDAD7",
 		linewidth: 0.1,
-		transparent: true,
 	});
 	const points = [];
 	points.push(new THREE.Vector3(x1, 0, y1));
@@ -404,6 +373,7 @@ function add_line(x1, y1, x2, y2) {
 
 	const geometry = new THREE.BufferGeometry().setFromPoints(points);
 	const line = new THREE.Line(geometry, material);
+	line.position.y = 1;
 
 	return line;
 }
@@ -420,9 +390,8 @@ function add_path(points = []) {
 
 	const material = new THREE.MeshStandardMaterial({ color: "#8D633E" });
 	const mesh = new THREE.Mesh(geometry, material);
+	mesh.points = points;
 	mesh.rotateX(Math.PI * 0.5);
-	mesh.userData.code = points.join("");
-	mesh.userData.name = points.join("-");
 
 	return mesh;
 }

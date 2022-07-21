@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Mesh, Vector2 } from "three";
+import { ShapePoints } from "./scripts/generate_grid";
 
 import { world } from "./world";
 
@@ -36,7 +37,13 @@ export const onResizeCamera = () => {
 
 export const referencePlane = new THREE.Mesh(
 	new THREE.PlaneGeometry(1000, 1000),
-	new THREE.MeshBasicMaterial({ color: 0x5555ff, side: THREE.BackSide, transparent: true, opacity: 0, depthTest: false })
+	new THREE.MeshBasicMaterial({
+		color: 0x5555ff,
+		side: THREE.BackSide,
+		transparent: true,
+		opacity: 0,
+		depthTest: false,
+	})
 );
 referencePlane.rotation.x = Math.PI / 2;
 referencePlane.position.z = -0.1;
@@ -62,6 +69,9 @@ document.addEventListener("mousemove", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
+
+const worldTerrain = [];
+
 document.addEventListener("click", (event) => {
 	raycaster.setFromCamera(mouse, camera);
 	const isIntersected = raycaster.intersectObject(world);
@@ -69,7 +79,26 @@ document.addEventListener("click", (event) => {
 	const intersection = isIntersected.find(({ object }) => object instanceof Mesh);
 	if (intersection) {
 		const { object } = intersection;
-		const mesh = object as Mesh;
-		mesh.material = new THREE.MeshStandardMaterial({ color: "#24802A" });
+		const shapePoints = object as ShapePoints;
+		const shape = new THREE.Shape();
+		const { points } = shapePoints;
+
+		for (let i = 0; i < points.length; i++) {
+			shape.moveTo(points[i][0], points[i][1]);
+			shape.lineTo(points[i][0], points[i][1]);
+		}
+		const geometry = new THREE.ExtrudeGeometry(shape, {
+			steps: 1,
+			depth: 1,
+		});
+
+		const material = new THREE.MeshStandardMaterial({ color: "#8D633E" });
+		const mesh = new THREE.Mesh(geometry, material) as unknown as ShapePoints;
+		mesh.rotateX(Math.PI * 0.5);
+		mesh.points = points;
+		mesh.position.y = shapePoints.position.y + 1;
+		worldTerrain.push(mesh);
+
+		world.add(mesh);
 	}
 });

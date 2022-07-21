@@ -4,7 +4,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { camera, onResizeCamera, sizes } from "./camera";
 import { lights } from "./lights";
-
 import "./style.css";
 import { world } from "./world";
 
@@ -16,12 +15,16 @@ scene.add(...lights);
 
 scene.add(camera);
 
-// const axesHelper = new THREE.AxesHelper(2);
-// scene.add(axesHelper);
+const axesHelper = new THREE.AxesHelper(20);
+scene.add(axesHelper);
 
 const canvas = document.querySelector("canvas.webgl") as HTMLElement;
 
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+const renderer = new THREE.WebGLRenderer({
+	canvas,
+	alpha: true,
+	antialias: true,
+});
 renderer.setSize(sizes.width, sizes.height);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
